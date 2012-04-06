@@ -1,0 +1,10 @@
+= FaqEngine
+
+
+rake faq:install:migrations
+
+
+mount Faq::Engine => '', :as => 'faq_engine'
+
+
+This project rocks and uses MIT-LICENSE.

@@ -1,0 +1,32 @@
+<h2> 자주하는 질문 </h2>
+
+<ul class="nav nav-pills">
+  <% @cates.each_with_index do |cate, i| %>
+
+    <% if params[:category_id].blank? and i == 0 %>
+      <% active_class_val = 'active' %>
+    <% elsif params[:category_id] == cate.id.to_s %>
+      <% active_class_val = 'active' %>
+    <% else %>
+      <% active_class_val = '' %>
+    <% end %>
+
+    <li class="<%= active_class_val %>"><%= link_to cate.name, :category_id => cate.id %></li>
+  <% end %>
+</ul>
+
+<div class="accordion" id="faq_wrap">
+	<% @faqs.each_with_index do |faq, i| %>
+		<div class="faq_box accordion-group">
+			<div class="question accordion-heading">
+				<%= link_to faq.question, "#faq_#{faq.id}", :class => 'accordion-toggle', 'data-toggle' => 'collapse', 'data-parent' => '#faq_wrap' %>
+			</div>
+			<div class="answer accordion-body <%= i == 0 ? 'in' : 'collapse' %>" id="faq_<%= faq.id %>">
+				<div class="accordion-inner">
+					<%= simple_format faq.answer %>
+				</div>
+			</div>
+		</div>	
+	<% end %>
+</div>
+

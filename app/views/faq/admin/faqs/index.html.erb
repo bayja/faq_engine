@@ -1,0 +1,50 @@
+<script>
+  $(function() {
+    $(".sortable_table").sortable({
+      axis: 'y',
+      update: function() {
+        $.post($(this).data('update-url'), $(this).sortable('serialize'));
+      }
+    });
+  });
+</script>
+<style>
+  .sortable_table td { cursor: move; }
+</style>
+<h2> 자주하는 질문 답변 </h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+    	<th>카테고리</th>
+      <th>질문</th>
+    </tr>
+  </thead>
+
+  <ul class="nav nav-pills">
+    <% @cates.each_with_index do |cate, i| %>
+
+      <% if params[:category_id].blank? and i == 0 %>
+        <% active_class_val = 'active' %>
+      <% elsif params[:category_id] == cate.id.to_s %>
+        <% active_class_val = 'active' %>
+      <% else %>
+        <% active_class_val = '' %>
+      <% end %>
+
+      <li class="<%= active_class_val %>"><%= link_to cate.name, :category_id => cate.id %></li>
+    <% end %>
+  </ul>
+
+  <tbody class="sortable_table" data-update-url="<%= sort_admin_faqs_url %>">
+    <% @faqs.each do |faq| %>
+      <tr id="faq_<%= faq.id %>">
+        <td><%= faq.category.name %></td>
+        <td><%= faq.question %></td>
+        <td><%= link_to '상세보기', [:admin, faq], class: 'btn btn-mini' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to '자주하는 질문 등록', [:new, :admin, :faq], :class => 'btn btn-primary' %>
